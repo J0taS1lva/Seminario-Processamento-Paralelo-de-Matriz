@@ -14,10 +14,22 @@ typedef struct {
 void* processLine(void* arg){
     thread_dado* dado = (thread_dado*)arg; // Transforma o (void*) no tipo de dado
     int r = dado->idLinha;
+    
+    // A thread mostra o que está lendo
+    printf(" Thread %D | Linha %d | [ ", r, r);
 
+    for (int j = 0; j < TAM; j++) {
+        printf("%02d ", Matriz[r][j]); // Valor de leitura
+    }
+
+    printf("] | x2 | [ ");
+
+    // Opreação
     for (int j = 0; j < TAM; j++){
         Matriz[r][j] *= 2;
+        printf("%02d ", Matriz[r][j]); // Valor de escrita
     }
+    printf("] \n");
     pthread_exit(NULL);
 }
 
@@ -32,6 +44,10 @@ int main(){
         }
     }
 
+    printf("\n=== TABELA DE EXECUCAO PARALELA ===\n");
+    printf(" ID Thread | Linha   | Leitura          | Op | Escrita\n");
+    printf("-----------|---------|------------------|----|----------\n");
+
     // Threads
     for (int i = 0; i <threadNUM; i++){
         t_arg[i].idLinha = i;
@@ -44,6 +60,6 @@ int main(){
     }
 
 
-    printf("Processo conluido.");
+    printf(" Processo conluido.\n");
     return 0;
 }
